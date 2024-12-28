@@ -1,0 +1,10 @@
+name = "Websockets"
+uuid = "222a9f85-59fa-42ce-8605-1bebf7b40b25"
+version = "0.1.0"
+
+[deps]
+Libwebsockets = "30a1cee6-c274-443c-b274-d8ea34e8f87d"
+
+[compat]
+Libwebsockets = "1.0.0"
+julia = "1.8"
