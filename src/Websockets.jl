@@ -6,7 +6,7 @@ include("Utils.jl")
 
 export open, close, is_open, recv, send, close
 
-# lws_set_log_level(LLL_ERR | LLL_WARN, C_NULL)
+lws_set_log_level(LLL_ERR | LLL_WARN, C_NULL)
 
 const LWS_PRE = LWS_SEND_BUFFER_PRE_PADDING
 
