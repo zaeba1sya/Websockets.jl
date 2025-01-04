@@ -30,7 +30,7 @@ Websockets.open(
 
     count = 0
 
-    while Websockets.isopen(conn) && count < 10
+    while Websockets.is_open(conn) && count < 10
         Websockets.recv(conn)
         count += 1
     end
