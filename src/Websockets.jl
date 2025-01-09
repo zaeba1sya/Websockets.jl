@@ -32,6 +32,11 @@ function ws_callback(
     len::Csize_t,
 )::Cint
     ctx = lws_get_context(conn)
+    if ctx == C_NULL
+        @error "WebSocket error occurred: context is NULL."
+        return -1
+    end
+
     user_ctx = unsafe_pointer_to_objref(lws_context_user(ctx))::UserInfo
 
     if reason == LWS_CALLBACK_CLIENT_RECEIVE && data != C_NULL
@@ -231,6 +236,10 @@ function open(
 end
 
 function recv(wc::WebsocketConnection)::Union{Nothing,String}
+    if wc.ctx == C_NULL || wc.closed
+        error("Attempted to receive data on a closed or invalid connection.")
+    end
+
     user_ctx = unsafe_pointer_to_objref(lws_context_user(wc.ctx))::UserInfo
     ch = user_ctx.incoming
     start_time = time()
