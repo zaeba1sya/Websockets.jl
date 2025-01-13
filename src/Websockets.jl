@@ -284,11 +284,17 @@ function close(wc::WebsocketConnection)::Nothing
     wc.closed = true
 
     if wc.ctx != C_NULL
-        user_ctx = unsafe_pointer_to_objref(lws_context_user(wc.ctx))::UserInfo
-        Base.close(user_ctx.incoming)
-        Base.close(user_ctx.send_queue)
+        try
+            user_ctx = unsafe_pointer_to_objref(lws_context_user(wc.ctx))::UserInfo
+            Base.close(user_ctx.incoming)
+            Base.close(user_ctx.send_queue)
+        catch e
+            @warn "Error while closing channels: $e"
+        end
 
         lws_cancel_service(wc.ctx)
+        lws_context_destroy(wc.ctx)
+        wc.ctx = C_NULL
     end
 
     return nothing
